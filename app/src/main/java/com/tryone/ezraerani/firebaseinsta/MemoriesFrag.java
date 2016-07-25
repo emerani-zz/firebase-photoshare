@@ -17,7 +17,10 @@ public class MemoriesFrag extends Fragment {
 
     @Bind(R.id.recycleMemories)
     RecyclerView recyclerView;
+    DataHandler dataHandler;
+
     View thisView;
+    RecyclerViewAdapter adapter;
 
     public static MemoriesFrag newInstance() {
         
@@ -32,8 +35,13 @@ public class MemoriesFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        dataHandler = DataHandler.getInstance();
 
         thisView = inflater.inflate(R.layout.memories_frag, container, false);
+
+        adapter = new RecyclerViewAdapter(getContext(), dataHandler.getPhotosFromDb());
+        recyclerView.setAdapter(adapter);
+
 
         return thisView;
     }

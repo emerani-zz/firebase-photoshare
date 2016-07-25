@@ -1,6 +1,7 @@
 package com.tryone.ezraerani.firebaseinsta;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import java.util.ArrayList;
 
@@ -13,16 +14,25 @@ public class PhotoItem extends Object{
     private int likes;
     private Bitmap image;
     private String caption;
+    private Uri downloadUrl;
 
     public PhotoItem() {
     }
 
-
-    public PhotoItem(ArrayList<String> comments, int likes, Bitmap image, String caption) {
+    public PhotoItem(ArrayList<String> comments, int likes, Bitmap image, String caption, Uri downloadUrl) {
         this.comments = comments;
         this.likes = likes;
         this.image = image;
         this.caption = caption;
+        this.downloadUrl = downloadUrl;
+    }
+
+    public Uri getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    public void setDownloadUrl(Uri downloadUrl) {
+        this.downloadUrl = downloadUrl;
     }
 
     public Bitmap getImage() {

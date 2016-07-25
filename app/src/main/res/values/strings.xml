@@ -2,4 +2,6 @@
     <string name="app_name">FireBaseInsta</string>
     <string name="action_take_photo">Take Photo</string>
     <string name="action_select_photo">Select Photo</string>
+    <string name="action_add_comment">Add Comment</string>
+    <string name="action_post_comment">Post</string>
 </resources>

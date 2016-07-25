@@ -10,17 +10,27 @@ import java.util.ArrayList;
  */
 public class DataHandler {
 
-    private DataHandler instance = new DataHandler();
+    private static DataHandler instance = new DataHandler();
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
+    private PhotoItem selectedPhotoItem = null;
+    private ArrayList<PhotoItem> photos = null;
 
     private DataHandler() {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReferenceFromUrl("gs://cameracloud-19e48.appspot.com");
     }
 
-    public DataHandler getInstance() {
+    public static DataHandler getInstance() {
         return instance;
+    }
+
+    public void setSelectedPhotoItem(int position) {
+        selectedPhotoItem = photos.get(position);
+    }
+
+    public PhotoItem getSelectedPhotoItem() {
+        return selectedPhotoItem;
     }
 
     public void uploadCapturedPhoto(){}
@@ -28,8 +38,11 @@ public class DataHandler {
     public void uploadSelectedPhoto(){}
 
     public ArrayList<PhotoItem> getPhotosFromDb() {
-        return new ArrayList<>();
+
+        return photos;
     }
 
     public void deletePhoto(PhotoItem photoItem){}
+
+    public void postComment(String comment){}
 }

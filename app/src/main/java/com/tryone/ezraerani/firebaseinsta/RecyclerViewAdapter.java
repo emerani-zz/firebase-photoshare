@@ -1,17 +1,36 @@
 package com.tryone.ezraerani.firebaseinsta;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by ezraerani on 7/25/16.
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MemoryHolder> {
 
+    private ArrayList<PhotoItem> photos;
+    private Context context;
+    Picasso picasso;
+    DataHandler dataHandler;
 
-    public RecyclerViewAdapter() {
+    public RecyclerViewAdapter(Context context, ArrayList<PhotoItem> photos) {
+        this.photos = photos;
+        this.context = context;
+        this.picasso = picasso.with(context);
+        dataHandler = DataHandler.getInstance();
     }
 
     @Override
@@ -22,10 +41,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(MemoryHolder holder, int position) {
+    public void onBindViewHolder(MemoryHolder holder, final int position) {
+
+        PhotoItem photoItem = photos.get(position);
+        picasso.load(photoItem.getDownloadUrl()).into(holder.imageView);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dataHandler.setSelectedPhotoItem(position);
+                context.startActivity(new Intent(context, DetailActivity.class));
+            }
+        });
 
     }
-
 
     @Override
     public int getItemCount() {
@@ -34,8 +62,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class MemoryHolder extends RecyclerView.ViewHolder {
 
+        @Bind(R.id.imgPreview)
+        ImageView imageView;
+
         public MemoryHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind((Activity) context);
 
         }
     }
