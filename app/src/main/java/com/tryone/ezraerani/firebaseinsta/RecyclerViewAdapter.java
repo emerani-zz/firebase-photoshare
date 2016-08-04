@@ -1,6 +1,5 @@
 package com.tryone.ezraerani.firebaseinsta;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +28,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter(Context context, ArrayList<PhotoItem> photos) {
         this.photos = photos;
         this.context = context;
-        this.picasso = picasso.with(context);
+        this.picasso = Picasso.with(context);
         dataHandler = DataHandler.getInstance();
     }
 
@@ -44,7 +43,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(MemoryHolder holder, final int position) {
 
         PhotoItem photoItem = photos.get(position);
-        picasso.load(photoItem.getDownloadUrl()).into(holder.imageView);
+        picasso.load(photoItem.getDownload_url()).into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,17 +56,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return 0;
+        return photos.size();
     }
 
     public class MemoryHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.imgPreview)
+        @Bind(R.id.memory)
         ImageView imageView;
 
         public MemoryHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind((Activity) context);
+            ButterKnife.bind(this, itemView);
 
         }
     }

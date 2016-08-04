@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "53986819064",
-    "firebase_url": "https://fbaseinsta.firebaseio.com",
-    "project_id": "fbaseinsta",
-    "storage_bucket": "fbaseinsta.appspot.com"
+    "project_number": "941200153142",
+    "firebase_url": "https://cameracloud-19e48.firebaseio.com",
+    "project_id": "cameracloud-19e48",
+    "storage_bucket": "cameracloud-19e48.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:53986819064:android:1780f3eb38debffa",
+        "mobilesdk_app_id": "1:941200153142:android:1780f3eb38debffa",
         "android_client_info": {
           "package_name": "com.tryone.ezraerani.firebaseinsta"
         }
       },
       "oauth_client": [
         {
-          "client_id": "53986819064-nt6254l7ioqj9ulmtddpi4fqngbq616s.apps.googleusercontent.com",
+          "client_id": "941200153142-aivpfvltrr4qsblqkbcvk5pip7jn0m71.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAqlS31yjF2ydneYFer2AGP4xzO6WTSml8"
+          "current_key": "AIzaSyDGc4rfEE6jyF2uSe17iX2mb9b6ihy4dMo"
         }
       ],
       "services": {

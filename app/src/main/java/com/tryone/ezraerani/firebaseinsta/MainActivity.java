@@ -1,10 +1,13 @@
 package com.tryone.ezraerani.firebaseinsta;
 
+import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.firebase.client.Firebase;
 
@@ -15,7 +18,6 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    Firebase myFirebaseRef;
     PagerAdapter pagerAdapter;
     ArrayList<Fragment> frags;
     ArrayList<String> names;
@@ -26,27 +28,37 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.tabs)
     TabLayout tabLayout;
 
-
-
-
-
-    // TODO: 7/25/16 set up a viewpager to toggle between "moments" and take/upload option
-
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.viewpager_layout);
+        verifyStoragePermissions(this);
 
-        Firebase.setAndroidContext(this);
-        myFirebaseRef = new Firebase("https://cameracloud-19e48.firebaseio.com/");
         ButterKnife.bind(this);
 
         setUpPaging();
 
 
+    }
 
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
     }
 
     public void setUpPaging() {
