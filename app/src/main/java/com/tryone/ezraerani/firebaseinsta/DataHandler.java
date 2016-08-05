@@ -54,7 +54,7 @@ public class DataHandler {
         return instance;
     }
 
-    public static DataHandler getInstance(GenericListener listener){
+    public static DataHandler getInstance(GenericListener listener) {
         myListener = listener;
         return instance;
     }
@@ -101,33 +101,26 @@ public class DataHandler {
 
     private void getPhotosFromDb() {
         Log.d("getPhotosFromDb", "called");
-
-
-
         Query getPics = myDB.child("photos");
         getPics.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("dataSnapshot", "" + dataSnapshot.getChildrenCount());
 
-                if (dataSnapshot.getChildrenCount() > 0) {
+                if (dataSnapshot.hasChildren()) {
 
                     for (DataSnapshot shot : dataSnapshot.getChildren()) {
                         photos.add(shot.getValue(PhotoItem.class));
                         Log.d("url", shot.getKey());
-
                     }
-
                     ((OnMemoriesLoadedListener) myListener).initAdapter();
-
                 }
             }
 
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
+
         });
     }
 
@@ -144,4 +137,6 @@ public class DataHandler {
     public ArrayList<PhotoItem> getPhotos() {
         return photos;
     }
+
+
 }

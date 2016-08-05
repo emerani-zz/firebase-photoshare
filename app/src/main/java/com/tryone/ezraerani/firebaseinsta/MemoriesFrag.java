@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,6 @@ public class MemoriesFrag extends Fragment implements DataHandler.OnMemoriesLoad
         thisView = inflater.inflate(R.layout.memories_frag, container, false);
         ButterKnife.bind(this, thisView);
 
-        Log.d("about to", "initialize adapter");
         photoItems = new ArrayList<>();
         adapter = new RecyclerViewAdapter(getActivity(), photoItems);
         recyclerView.setAdapter(adapter);
@@ -58,6 +56,7 @@ public class MemoriesFrag extends Fragment implements DataHandler.OnMemoriesLoad
 
     @Override
     public void initAdapter() {
+        photoItems.clear();
         photoItems.addAll(dataHandler.getPhotos());
         adapter.notifyDataSetChanged();
 
