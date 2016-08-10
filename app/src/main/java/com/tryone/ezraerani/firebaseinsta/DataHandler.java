@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -67,7 +70,7 @@ public class DataHandler {
 
     public void setSelectedPhotoItem(int position) {
         selectedPhotoItem = photos.get(position);
-        Log.d("selectedPhoto", ""+selectedPhotoItem.getComments().size());
+        Log.d("selectedPhoto", "" + selectedPhotoItem.getComments().size());
     }
 
     public PhotoItem getSelectedPhotoItem() {
@@ -168,8 +171,33 @@ public class DataHandler {
     }
 
     public void addLike() {
+        Log.d("addLike", "called");
 
+        Firebase addLikeRef = myFirebaseRef.child("photos")
+                .child(selectedPhotoItem.getPhoto_key()).child("likes");
+        addLikeRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Log.d("doTransaction", "called");
+
+                if (mutableData.getValue() == null) {
+                    mutableData.setValue(1);
+                } else {
+
+                    mutableData.setValue((Long) mutableData.getValue() + 1);
+                }
+
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(FirebaseError firebaseError, boolean b, com.firebase.client.DataSnapshot dataSnapshot) {
+//                Log.d("onComplete", firebaseError.getMessage());
+
+            }
+        });
     }
+
 
     public void loadComments() {
         Query commentsQuery = myDB.child("photos/" + selectedPhotoItem.getPhoto_key() + "/comments");

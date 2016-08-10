@@ -73,6 +73,8 @@ public class DetailActivity extends AppCompatActivity implements DataHandler.OnS
 
     @OnClick(R.id.likeButton)
     public void addLike(View view) {
+        Log.d("heartButton", "hearted");
+        dataHandler.addLike();
 
     }
 
