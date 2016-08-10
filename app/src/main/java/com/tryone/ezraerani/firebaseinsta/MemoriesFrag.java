@@ -49,6 +49,8 @@ public class MemoriesFrag extends Fragment implements DataHandler.OnMemoriesLoad
         adapter = new RecyclerViewAdapter(getActivity(), photoItems);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false));
+        dataHandler.getPhotosFromDb();
+        initAdapter();
 
 
         return thisView;
@@ -61,4 +63,8 @@ public class MemoriesFrag extends Fragment implements DataHandler.OnMemoriesLoad
         adapter.notifyDataSetChanged();
 
     }
+
+
+
+
 }

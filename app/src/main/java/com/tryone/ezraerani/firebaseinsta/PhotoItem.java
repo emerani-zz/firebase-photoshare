@@ -1,23 +1,26 @@
 package com.tryone.ezraerani.firebaseinsta;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ezraerani on 7/25/16.
  */
 public class PhotoItem extends Object{
 
-    private ArrayList<String> comments;
+    private Map<String, String> comments;
     private int likes;
     private String download_url;
+    private String photo_key;
 
     public PhotoItem() {
     }
 
-    public PhotoItem(ArrayList<String> comments, int likes, String download_url) {
+    public PhotoItem(HashMap<String, String> comments, int likes, String download_url, String photo_key) {
         this.comments = comments;
         this.likes = likes;
         this.download_url = download_url;
+        this.photo_key = photo_key;
     }
 
     public String getDownload_url() {
@@ -28,11 +31,11 @@ public class PhotoItem extends Object{
         this.download_url = download_url;
     }
 
-    public ArrayList<String> getComments() {
+    public Map<String, String> getComments() {
         return comments;
     }
 
-    public void setComments(ArrayList<String> comments) {
+    public void setComments(HashMap<String, String> comments) {
         this.comments = comments;
     }
 
@@ -42,5 +45,13 @@ public class PhotoItem extends Object{
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public String getPhoto_key() {
+        return photo_key;
+    }
+
+    public void setPhoto_key(String photo_key) {
+        this.photo_key = photo_key;
     }
 }

@@ -21,6 +21,7 @@ import com.google.firebase.storage.UploadTask;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by ezraerani on 7/25/16.
@@ -31,11 +32,16 @@ public class DataHandler {
         void initAdapter();
     }
 
+    public interface OnSelectedImageCommentsLoadedListener extends GenericListener {
+        void loadImageComments();
+    }
+
     private static GenericListener myListener;
     private static DataHandler instance = new DataHandler();
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     private PhotoItem selectedPhotoItem = null;
+    private float selectedPhotoItemAspectRatio;
     private ArrayList<PhotoItem> photos;
     private final String TIME_STAMP = "timeStamp";
     Firebase myFirebaseRef;
@@ -47,7 +53,7 @@ public class DataHandler {
         storageReference = firebaseStorage.getReferenceFromUrl("gs://cameracloud-19e48.appspot.com/");
         myDB = FirebaseDatabase.getInstance().getReference();
         photos = new ArrayList<>();
-        getPhotosFromDb();
+//        getPhotosFromDb();
     }
 
     public static DataHandler getInstance() {
@@ -61,6 +67,7 @@ public class DataHandler {
 
     public void setSelectedPhotoItem(int position) {
         selectedPhotoItem = photos.get(position);
+        Log.d("selectedPhoto", ""+selectedPhotoItem.getComments().size());
     }
 
     public PhotoItem getSelectedPhotoItem() {
@@ -72,18 +79,20 @@ public class DataHandler {
         String timeStamp = getTimeStamp();
         StorageReference imageRef = storageReference.child(timeStamp);
 
-        StorageMetadata.Builder builder = new StorageMetadata.Builder();
-        final Firebase postRef = myFirebaseRef.child("photos").push();
-        final String key = postRef.getKey();
-        postRef.setValue(key);
 
-        builder.setCustomMetadata("key", key);
+        StorageMetadata.Builder builder = new StorageMetadata.Builder();
+
+
+        final String downloadUrl;
+
+//        builder.setCustomMetadata("key", key);
         UploadTask uploadTask = imageRef.putFile(uri);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.d("success", "called");
-                postRef.child("download_url").setValue(taskSnapshot.getDownloadUrl().toString());
+                updateDb(taskSnapshot.getDownloadUrl().toString());
+//                postRef.child("download_url").setValue(taskSnapshot.getDownloadUrl().toString());
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -93,13 +102,24 @@ public class DataHandler {
             }
         });
 
+    }
 
+    private void updateDb(String url) {
+        final Firebase postRef = myFirebaseRef.child("photos").push();
+        final String key = postRef.getKey();
+//        final Firebase keyRef = postRef.child("photo_key");
+//        keyRef.setValue(key);
+        PhotoItem photoItem = new PhotoItem();
+        photoItem.setPhoto_key(key);
+        photoItem.setDownload_url(url);
+        postRef.setValue(photoItem);
+        Log.d("updatedDb", "");
     }
 
     private void uploadSelectedPhoto() {
     }
 
-    private void getPhotosFromDb() {
+    public void getPhotosFromDb() {
         Log.d("getPhotosFromDb", "called");
         Query getPics = myDB.child("photos");
         getPics.addValueEventListener(new ValueEventListener() {
@@ -107,7 +127,10 @@ public class DataHandler {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("dataSnapshot", "" + dataSnapshot.getChildrenCount());
 
-                if (dataSnapshot.hasChildren()) {
+                if (dataSnapshot.getChildrenCount() > 0) {
+                    Log.d("shot", "thing");
+
+                    photos.clear();
 
                     for (DataSnapshot shot : dataSnapshot.getChildren()) {
                         photos.add(shot.getValue(PhotoItem.class));
@@ -128,6 +151,12 @@ public class DataHandler {
     }
 
     public void postComment(String comment) {
+
+        final Firebase commentRef = myFirebaseRef.child("photos").child(selectedPhotoItem.getPhoto_key())
+                .child("comments").push();
+        commentRef.setValue(comment);
+
+
     }
 
     private String getTimeStamp() {
@@ -136,6 +165,28 @@ public class DataHandler {
 
     public ArrayList<PhotoItem> getPhotos() {
         return photos;
+    }
+
+    public void addLike() {
+
+    }
+
+    public void loadComments() {
+        Query commentsQuery = myDB.child("photos/" + selectedPhotoItem.getPhoto_key() + "/comments");
+        commentsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                HashMap<String, String> comments = (HashMap<String, String>) dataSnapshot.getValue();
+                selectedPhotoItem.setComments(comments);
+                ((OnSelectedImageCommentsLoadedListener) myListener).loadImageComments();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

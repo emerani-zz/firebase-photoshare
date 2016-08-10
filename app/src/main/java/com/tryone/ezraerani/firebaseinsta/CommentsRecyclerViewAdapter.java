@@ -1,14 +1,15 @@
 package com.tryone.ezraerani.firebaseinsta;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,10 +23,14 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<CommentsRe
     private DataHandler dataHandler;
     ArrayList<String> comments;
 
-    public CommentsRecyclerViewAdapter(Context context) {
+
+    public CommentsRecyclerViewAdapter(Context context, Map<String, String> comments) {
         this.context = context;
+        this.comments = new ArrayList<>();
+        this.comments.addAll(comments.values());
+        Log.d("ikiki", ""+comments.size());
         dataHandler = DataHandler.getInstance();
-        this.comments = dataHandler.getSelectedPhotoItem().getComments();
+//        this.comments = dataHandler.getSelectedPhotoItem().getComments();
     }
 
     @Override
@@ -43,6 +48,12 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<CommentsRe
 
     @Override
     public int getItemCount() {
+
+//        int size = 0;
+//        if (comments != null) {
+//            size = comments.size();
+//        }
+        Log.d("commentssize", ""+comments.size());
         return comments.size();
     }
 
@@ -53,7 +64,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<CommentsRe
 
         public CommentHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind((Activity) context);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

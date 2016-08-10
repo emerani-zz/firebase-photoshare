@@ -44,7 +44,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         PhotoItem photoItem = photos.get(position);
         picasso.load(photoItem.getDownload_url())
-                .resize(100, 100).into(holder.imageView);
+                .resize(150, 150)
+//                .centerInside()
+                .centerCrop()
+                .into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +55,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 context.startActivity(new Intent(context, DetailActivity.class));
             }
         });
+
+
+
+
 
     }
 
