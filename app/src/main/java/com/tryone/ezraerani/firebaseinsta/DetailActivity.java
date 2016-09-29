@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -28,6 +29,10 @@ public class DetailActivity extends AppCompatActivity implements DataHandler.OnS
 
     @Bind(R.id.imageCommentsRV)
     RecyclerView recyclerView;
+
+    @Bind(R.id.numOfLikesTV)
+    TextView numberOfLikes;
+
 
     CommentsRecyclerViewAdapter adapter;
     DataHandler dataHandler;
@@ -54,7 +59,8 @@ public class DetailActivity extends AppCompatActivity implements DataHandler.OnS
                 .into(imageView);
 
 
-        comments = dataHandler.getSelectedPhotoItem().getComments();
+        comments = thisphoto.getComments();
+        numberOfLikes.setText(getString(R.string.num_likes) + " " + Integer.toString(thisphoto.getLikes()));
 
         Log.d("commentsSize", "" + comments.size());
         adapter = new CommentsRecyclerViewAdapter(this, comments);

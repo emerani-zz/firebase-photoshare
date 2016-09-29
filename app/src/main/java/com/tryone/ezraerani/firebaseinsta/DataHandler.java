@@ -17,7 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -82,13 +81,6 @@ public class DataHandler {
         String timeStamp = getTimeStamp();
         StorageReference imageRef = storageReference.child(timeStamp);
 
-
-        StorageMetadata.Builder builder = new StorageMetadata.Builder();
-
-
-        final String downloadUrl;
-
-//        builder.setCustomMetadata("key", key);
         UploadTask uploadTask = imageRef.putFile(uri);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
